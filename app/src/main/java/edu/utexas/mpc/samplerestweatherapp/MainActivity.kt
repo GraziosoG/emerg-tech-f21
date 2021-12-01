@@ -220,7 +220,15 @@ class MainActivity : AppCompatActivity() {
                 com.android.volley.Response.Listener<String> { response ->
                     //textView.text = response
                     val currentTime: Date = Calendar.getInstance().time
-                    val nextdayString = (currentTime.year+1900).toString() + "-" + (currentTime.month+1) + "-" + (currentTime.date+1)
+                    var nextdayString = ""
+                    println("here")
+                    println(currentTime.date)
+                    if (currentTime.date < 10){
+                        nextdayString = (currentTime.year+1900).toString() + "-" + (currentTime.month+1) + "-0" + (currentTime.date+1)
+                    } else {
+                        nextdayString = (currentTime.year+1900).toString() + "-" + (currentTime.month+1) + "-" + (currentTime.date+1)
+                    }
+                    println("tomorrow date")
                     println(nextdayString)
 
                     futureWeatherResult = gson.fromJson(response, Forecast::class.java)
@@ -231,6 +239,7 @@ class MainActivity : AppCompatActivity() {
                             maxTempTmw = fw.main.temp_max
                             minTempTmw = fw.main.temp_min
                             humidityTmw = fw.main.humidity
+                            println("received for tomorrow")
                             println(maxTempTmw.toString() + minTempTmw.toString() + humidityTmw.toString())
                         }
                     }
