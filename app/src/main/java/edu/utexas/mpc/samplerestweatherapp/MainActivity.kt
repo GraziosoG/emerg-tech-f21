@@ -1,6 +1,5 @@
 package edu.utexas.mpc.samplerestweatherapp
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,7 +8,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,12 +19,18 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.LegendRenderer
+import com.jjoe64.graphview.series.BarGraphSeries
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_main.*
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended
 import org.eclipse.paho.client.mqttv3.MqttMessage
-import java.lang.Exception
+import org.w3c.dom.Text
 import java.util.*
 
 var weatherDescrip = ""
@@ -34,6 +41,7 @@ var humidity = 0
 var maxTempTmw = 0.0
 var minTempTmw = 0.0
 var humidityTmw = 0
+var seven = ""
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,9 +54,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var resultsView: TextView
     lateinit var allButton: Button
     lateinit var streakView: TextView
-    /*lateinit var retrieveButton: Button
-    lateinit var sendButton: Button
-    lateinit var syncButton: Button*/
+    lateinit var homeButton: Button
+    lateinit var graphButton: Button
+    lateinit var goalsButton: Button
+    lateinit var pageHome: ConstraintLayout
+    lateinit var pageGraph: ConstraintLayout
+    lateinit var graph: GraphView
+    lateinit var holdseven: TextView
 
     lateinit var queue: RequestQueue
     lateinit var gson: Gson
@@ -86,13 +98,37 @@ class MainActivity : AppCompatActivity() {
         allButton = this.findViewById(R.id.all)
         allButton.setOnClickListener({allTheWorkIsOnMe()})
 
-        /*retrieveButton = this.findViewById(R.id.retrieveButton)
-        // when the user presses the retrievebutton, this method will get called
-        retrieveButton.setOnClickListener({ requestWeather() })
+        homeButton = this.findViewById(R.id.thome)
+        graphButton = this.findViewById(R.id.tgraph)
+        goalsButton = this.findViewById(R.id.tgoals)
+        pageHome = this.findViewById(R.id.pageHome)
+        pageGraph = this.findViewById(R.id.pageGraph)
+        graph = this.findViewById(R.id.graph)
+        holdseven = this.findViewById(R.id.holdseven)
 
-        sendButton = this.findViewById(R.id.sendButton)
-        // when the user presses the sendbutton, this method will get called
-        sendButton.setOnClickListener({ sendWeather() })*/
+        graph.viewport.isXAxisBoundsManual = true
+        graph.viewport.isYAxisBoundsManual = true
+        graph.viewport.setMinX(-1.0)
+        graph.viewport.setMaxX(7.0)
+        graph.viewport.setMinY(0.0)
+        graph.viewport.setMaxY(70.0)
+        //graph.viewport.setScalableY(true)
+        //graph.viewport.isScalable = true
+        graph.viewport.setScrollableY(true)
+        graph.viewport.isScrollable = true
+
+        holdseven.setText("7 Days Steps Achievement")
+
+        graphButton.setOnClickListener({
+            pageHome.visibility = View.GONE
+            pageGraph.visibility = View.VISIBLE
+        })
+
+        homeButton.setOnClickListener({
+            pageHome.visibility = View.VISIBLE
+            pageGraph.visibility = View.GONE
+        })
+
 
         queue = Volley.newRequestQueue(this)
         gson = Gson()
@@ -126,6 +162,32 @@ class MainActivity : AppCompatActivity() {
             // this method is called when a message is received that fulfills a subscription
             override fun messageArrived(topic: String?, message: MqttMessage?) {
                 println(message)
+                if (topic == "seven"){
+                    seven = message.toString()
+                    val split = seven.split("^")
+                    val bao = arrayOf(
+                            DataPoint(0.0, 0.0),
+                            DataPoint(1.0, 0.0),
+                            DataPoint(2.0, 0.0),
+                            DataPoint(3.0, 0.0),
+                            DataPoint(4.0, 0.0),
+                            DataPoint(5.0, 0.0),
+                            DataPoint(6.0, 0.0)
+                    )
+                    var i = 0
+                    for (line in split) {
+                        val items = line.split(",")
+                        bao[i] = DataPoint(i.toDouble(), items[1].toDouble())
+                        println(items[1].toDouble())
+                        i+=1
+                    }
+                    val series: BarGraphSeries<DataPoint> = BarGraphSeries<DataPoint>(bao)
+                    graph.removeAllSeries()
+                    graph.addSeries(series)
+                    series.setSpacing(50);
+                    series.setDrawValuesOnTop(true)
+                    series.setValuesOnTopColor(Color.MAGENTA)
+                }
                 if (topic == "streak") {
                     streakView.setText("Streak Day: " + message.toString())
                 }

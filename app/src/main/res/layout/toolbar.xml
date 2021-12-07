@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/actionbarT"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:minHeight="?attr/actionBarSize"
+    app:theme="@style/Base.Theme.AppCompat.CompactMenu" >
+
+    <LinearLayout
+        android:id="@+id/toolbarmenucontainer"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/thome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:layout_weight = "1"
+            android:text="Home" />
+
+        <Button
+            android:id="@+id/tgraph"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:layout_weight = "1"
+            android:text="Graph" />
+
+        <Button
+            android:id="@+id/tgoals"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:layout_weight = "1"
+            android:text="Goals" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.Toolbar>

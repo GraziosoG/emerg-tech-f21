@@ -5,141 +5,185 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/pageHome"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Hello World!"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@id/steps"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Hello World!"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/steps"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:text="Step Count"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@id/goal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text" />
 
-    <TextView
-        android:id="@+id/steps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:text="Step Count"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/goal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text" />
+        <TextView
+            android:id="@+id/goal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Step Goal Today"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/goaltmw"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/steps" />
 
-    <TextView
-        android:id="@+id/goal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="Step Goal Today"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/goaltmw"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/steps" />
+        <TextView
+            android:id="@+id/goaltmw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Step Goal Tomorrow"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/results"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/goal" />
 
-    <TextView
-        android:id="@+id/goaltmw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="Step Goal Tomorrow"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/results"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal" />
+        <TextView
+            android:id="@+id/results"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="20dp"
+            android:text="Did I meet my goal?"
+            android:textColor="#2196F3"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/all"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/goaltmw" />
 
-    <TextView
-        android:id="@+id/results"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="20dp"
-        android:text="Did I meet my goal?"
-        android:textColor="#2196F3"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/all"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goaltmw" />
+        <Button
+            android:id="@+id/all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="10dp"
+            android:text="Check Goal"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/streak"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/results" />
 
-    <Button
-        android:id="@+id/all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="10dp"
-        android:text="Check Goal"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/streak"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/results" />
+        <TextView
+            android:id="@+id/streak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="5dp"
+            android:text="Streak Days: "
+            android:textColor="#6db52d"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/all" />
 
-    <!--<Button
-        android:id="@+id/retrieveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Retrieve Weather"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/all" />
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="175dp"
+            android:layout_height="125dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="15dp"
+            android:background="#00BCD4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/streak" />
 
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Check Goal Meet"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/retrieveButton" />
+    </android.support.constraint.ConstraintLayout>
 
-    <Button
-        android:id="@+id/MQTT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:text="Connect Broker"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/streak"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendButton" />-->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/pageGraph"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/streak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="5dp"
-        android:text="Streak Days: "
-        android:textColor="#6db52d"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/image_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/all" />
+        <TextView
+            android:id="@+id/holdseven"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="bao bao"
+            android:textAlignment="center"
+            android:background="#ffffff"
+            android:textColor="#5327A3"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="175dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="15dp"
-        android:background="#00BCD4"
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="70dp"
+            android:id="@+id/graph" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/pageGoals"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/goalDescrip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Set your own goal and set points!"
+            android:textAlignment="center"
+            android:textColor="#5327A3"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/duration"
+            android:layout_width=""
+            android:layout_height=""/>
+
+        <EditText
+            android:id="@+id/goalset"
+            android:layout_width=""
+            android:layout_height=""/>
+
+        <TextView
+            android:id="@+id/goalStatus"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Start your goal now"
+            android:textAlignment="center"
+            android:textColor="#5327A3"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <include android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/streak" />
-
+        app:layout_constraintStart_toStartOf="parent"/>
 </android.support.constraint.ConstraintLayout>
