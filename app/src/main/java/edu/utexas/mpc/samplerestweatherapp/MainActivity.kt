@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var steptmwView: TextView
     lateinit var resultsView: TextView
     lateinit var allButton: Button
+    lateinit var streakView: TextView
     /*lateinit var retrieveButton: Button
     lateinit var sendButton: Button
     lateinit var syncButton: Button*/
@@ -67,6 +68,8 @@ class MainActivity : AppCompatActivity() {
     val subscribeTopic = "steps"
     val subscribeTopicm = "msteps"
     val subscribeTopicr = "results"
+    val subscribeTopics = "streak"
+    val subscribeTopic7 = "seven"
     val publishTopic = "weather"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         stepgoalView = this.findViewById(R.id.goal)
         steptmwView = this.findViewById(R.id.goaltmw)
         resultsView = this.findViewById(R.id.results)
+        streakView = this.findViewById(R.id.streak)
 
         allButton = this.findViewById(R.id.all)
         allButton.setOnClickListener({allTheWorkIsOnMe()})
@@ -111,6 +115,8 @@ class MainActivity : AppCompatActivity() {
                 mqttAndroidClient.subscribe(subscribeTopic, 0)
                 mqttAndroidClient.subscribe(subscribeTopicm, 0)
                 mqttAndroidClient.subscribe(subscribeTopicr, 0)
+                mqttAndroidClient.subscribe(subscribeTopics, 0)
+                mqttAndroidClient.subscribe(subscribeTopic7, 0)
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     sendWeather()
@@ -120,6 +126,9 @@ class MainActivity : AppCompatActivity() {
             // this method is called when a message is received that fulfills a subscription
             override fun messageArrived(topic: String?, message: MqttMessage?) {
                 println(message)
+                if (topic == "streak") {
+                    streakView.setText("Streak Day: " + message.toString())
+                }
                 if (topic == "msteps") {
                     stepsView.setText("Step Count: " + message.toString())
                 }
@@ -181,10 +190,14 @@ class MainActivity : AppCompatActivity() {
                 connectBroker()
             }, 1500)
             Handler(Looper.getMainLooper()).postDelayed({
+                println("before send")
                 try {
                     sendWeather()
+                    println("sent")
                 }
-                catch(e: Exception) {}
+                catch(e: Exception) {
+                    println("catch")
+                }
             }, 1500)
         }
     }
