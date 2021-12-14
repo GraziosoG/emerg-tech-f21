@@ -10,11 +10,10 @@ import android.os.Looper
 import android.provider.Settings
 import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -42,6 +41,8 @@ var maxTempTmw = 0.0
 var minTempTmw = 0.0
 var humidityTmw = 0
 var seven = ""
+var dailysteps = 0
+var dailygoal = 0
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,6 +62,15 @@ class MainActivity : AppCompatActivity() {
     lateinit var pageGraph: ConstraintLayout
     lateinit var graph: GraphView
     lateinit var holdseven: TextView
+
+    lateinit var pageGoals: ConstraintLayout
+    lateinit var goalDescView: TextView
+    lateinit var goalDuraEdit: EditText
+    lateinit var goalStepEdit: EditText
+    lateinit var goalStepOutEdit: EditText
+    lateinit var goalSetButton: Button
+    lateinit var goalStatusView: TextView
+    lateinit var goalRewardView: TextView
 
     lateinit var queue: RequestQueue
     lateinit var gson: Gson
@@ -82,7 +92,9 @@ class MainActivity : AppCompatActivity() {
     val subscribeTopicr = "results"
     val subscribeTopics = "streak"
     val subscribeTopic7 = "seven"
+    val subscribeTopicg = "usergoalr"
     val publishTopic = "weather"
+    val publishTopicg = "usergoal"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,15 +108,23 @@ class MainActivity : AppCompatActivity() {
         streakView = this.findViewById(R.id.streak)
 
         allButton = this.findViewById(R.id.all)
-        allButton.setOnClickListener({allTheWorkIsOnMe()})
 
         homeButton = this.findViewById(R.id.thome)
         graphButton = this.findViewById(R.id.tgraph)
         goalsButton = this.findViewById(R.id.tgoals)
         pageHome = this.findViewById(R.id.pageHome)
         pageGraph = this.findViewById(R.id.pageGraph)
+        pageGoals = this.findViewById(R.id.pageGoals)
         graph = this.findViewById(R.id.graph)
         holdseven = this.findViewById(R.id.holdseven)
+
+        goalDescView = this.findViewById(R.id.goalDescrip)
+        goalDuraEdit = this.findViewById(R.id.duration)
+        goalStepEdit = this.findViewById(R.id.goalstep)
+        goalStepOutEdit = this.findViewById(R.id.stepsoutput)
+        goalSetButton = this.findViewById(R.id.setgoal)
+        goalStatusView = this.findViewById(R.id.goalstatus)
+        goalRewardView = this.findViewById(R.id.reward)
 
         graph.viewport.isXAxisBoundsManual = true
         graph.viewport.isYAxisBoundsManual = true
@@ -119,16 +139,39 @@ class MainActivity : AppCompatActivity() {
 
         holdseven.setText("7 Days Steps Achievement")
 
+        goalsButton.setOnClickListener({
+            pageHome.visibility = View.GONE
+            pageGraph.visibility = View.GONE
+            pageGoals.visibility = View.VISIBLE
+        })
+
+        goalSetButton.setOnClickListener({sendUserGoal()})
+        allButton.setOnClickListener({allTheWorkIsOnMe()})
+        goalStepEdit.addTextChangedListener(object: TextWatcher
+        {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                goalStepOutEdit.setText("${(p0.toString().toInt() + dailysteps)}/$dailygoal")
+            }
+        })
+
         graphButton.setOnClickListener({
             pageHome.visibility = View.GONE
             pageGraph.visibility = View.VISIBLE
+            pageGoals.visibility = View.GONE
         })
 
         homeButton.setOnClickListener({
             pageHome.visibility = View.VISIBLE
             pageGraph.visibility = View.GONE
+            pageGoals.visibility = View.GONE
         })
-
 
         queue = Volley.newRequestQueue(this)
         gson = Gson()
@@ -153,6 +196,7 @@ class MainActivity : AppCompatActivity() {
                 mqttAndroidClient.subscribe(subscribeTopicr, 0)
                 mqttAndroidClient.subscribe(subscribeTopics, 0)
                 mqttAndroidClient.subscribe(subscribeTopic7, 0)
+                mqttAndroidClient.subscribe(subscribeTopicg, 0)
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     sendWeather()
@@ -162,6 +206,14 @@ class MainActivity : AppCompatActivity() {
             // this method is called when a message is received that fulfills a subscription
             override fun messageArrived(topic: String?, message: MqttMessage?) {
                 println(message)
+                if (topic == "usergoalr"){
+                    if (message.toString() == "Y"){
+                        goalStatusView.setText("You achieved you goal!")
+                        goalRewardView.setText("My Reward Points: 100")
+                    } else {
+                        goalStatusView.setText("You did not achieve your goal, try again!")
+                    }
+                }
                 if (topic == "seven"){
                     seven = message.toString()
                     val split = seven.split("^")
@@ -189,14 +241,19 @@ class MainActivity : AppCompatActivity() {
                     series.setValuesOnTopColor(Color.MAGENTA)
                 }
                 if (topic == "streak") {
-                    streakView.setText("Streak Day: " + message.toString())
+                    streakView.setText("Streak Day: " + message.toString().split(",")[0])
+                    if (message.toString().split(",")[1] == "Y"){
+                        showRecipe()
+                    }
                 }
                 if (topic == "msteps") {
                     stepsView.setText("Step Count: " + message.toString())
+                    dailysteps = message.toString().toInt()
                 }
                 if (topic == "steps"){
                     stepgoalView.setText("Step Goal Today: " + message.toString().split(";")[0])
                     steptmwView.setText("Step Goal Tomorrow: " + message.toString().split(";")[1])
+                    dailygoal = message.toString().split(";")[0].toInt()
                 }
                 if (topic == "results"){
                     if (message.toString().get(0).toString() == "G"){
@@ -220,11 +277,42 @@ class MainActivity : AppCompatActivity() {
 
     })}
 
+    fun sendUserGoal() {
+        var userDura = goalDuraEdit.text.toString()
+        var userStep = goalStepEdit.text.toString()
+        //var custGoal = userDura + "," + userStep
+        goalStatusView.setText("Timer started!")
+        val sendMessage = MqttMessage()
+        println("created message")
+        sendMessage.payload = (userDura + "," + userStep).toByteArray()
+        mqttAndroidClient.publish(publishTopicg, sendMessage)
+        println(publishTopicg)
+        println("published customize goal")
+    }
+
     fun allTheWorkIsOnMe() {
         requestWeather()
         Handler(Looper.getMainLooper()).postDelayed({
             showDialog()
         }, 1000)
+    }
+
+    fun showRecipe() {
+        val builder: AlertDialog.Builder? = this.let {
+            AlertDialog.Builder(it)
+        }
+        builder?.setMessage("Congratulations on meeting your streak! Here is your gift recipe! https://www.allrecipes.com/recipe/20144/banana-banana-bread")?.setTitle("Your streak gift is here!")
+        builder?.apply {
+            /*setPositiveButton("OK",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        startActivityForResult(Intent(Settings.ACTION_WIFI_SETTINGS), 88);
+                    })
+            setNegativeButton("NO",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        Toast.makeText(this.context, "You need to connect to Raspberry Pi network to continue", Toast.LENGTH_LONG).show()
+                    })*/
+        }
+        builder?.create()?.show()
     }
 
     fun showDialog() {

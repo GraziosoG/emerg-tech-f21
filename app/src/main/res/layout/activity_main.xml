@@ -125,7 +125,7 @@
             android:id="@+id/holdseven"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="bao bao"
+            android:text="7 Days Steps Achievement"
             android:textAlignment="center"
             android:background="#ffffff"
             android:textColor="#5327A3"
@@ -142,40 +142,121 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/pageGoals"
-        android:visibility="gone"
+        android:visibility= "gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/goalDescrip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Set your own goal and set points!"
-            android:textAlignment="center"
-            android:textColor="#5327A3"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/duration"
-            android:layout_width=""
-            android:layout_height=""/>
-
-        <EditText
-            android:id="@+id/goalset"
-            android:layout_width=""
-            android:layout_height=""/>
-
-        <TextView
-            android:id="@+id/goalStatus"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Start your goal now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="160dp"
+            android:text="Set custom goal to achieve your daily goal!"
             android:textAlignment="center"
             android:textColor="#5327A3"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
+        <TextView
+            android:id="@+id/mininput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Enter Minute"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/goalDescrip"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <EditText
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/mininput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/stepinput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Enter Steps"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/duration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <EditText
+            android:id="@+id/goalstep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/stepinput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/stepsinform"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Accumulated Goal to Reach/Goal of Today"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/goalstep"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <EditText
+            android:id="@+id/stepsoutput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/stepsinform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/setgoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
+            android:text="Start Goal"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/stepsoutput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/goalstatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get Ready"
+            android:textAlignment="center"
+            android:textColor="#5327A3"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/setgoal" />
+
+        <TextView
+            android:id="@+id/reward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Reward Points: "
+            android:textAlignment="center"
+            android:textColor="#fc8c03"
+            android:textSize="20sp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@id/goalstatus" />
 
     </android.support.constraint.ConstraintLayout>
 
